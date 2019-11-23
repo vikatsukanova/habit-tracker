@@ -37,6 +37,7 @@ router.route('/')
     */
     // Play around with the destructuring if you would like the request to be sent in a different way
     const { bookData } = req.body
+    console.log({bookData})
     try {
       // 2. Create book from data
       const book = await bookService.createBook(bookData)

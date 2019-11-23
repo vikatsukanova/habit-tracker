@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose')
 const express = require('express')
+const { ValidationError } = mongoose;
 
 // 1. Create main express intance
 const app = express()
@@ -18,6 +19,14 @@ app.use(express.urlencoded({ extended: true }))
 
 // 5. Utilise routes
 app.use('/api/books', bookRoutes)
+app.use((err, req, res, next ) => {
+  if (err instanceof ValidationError) {
+    //handle the validation error
+    res.status(400).send()
+  } else {
+    res.status(500).send()
+  }
+})
 
 // 6. Define configuration for mongodb
 const MONGO_CONFIG = {

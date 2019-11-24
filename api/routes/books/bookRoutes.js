@@ -36,11 +36,11 @@ router.route('/')
       }
     */
     // Play around with the destructuring if you would like the request to be sent in a different way
-    const { bookData } = req.body
-    console.log({bookData})
+    const { body } = req
+    console.log({body})
     try {
       // 2. Create book from data
-      const book = await bookService.createBook(bookData)
+      const book = await bookService.createBook(body)
       // 3. Respond with created book
       res.status(200).send({
         data: [book]

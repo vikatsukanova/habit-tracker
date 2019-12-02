@@ -11,6 +11,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles({
   root: {
@@ -64,6 +66,25 @@ function App(props) {
     setNewHabit('')
   }
 
+  const handleButtonDelete = async (id) => {
+    console.log(id);
+
+    const data = {
+      _id: id
+    }
+
+    const response = await fetch('/api/books/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+
+    setData(habits.filter(habit => habit._id !== id));
+
+  }
+
     return (
       <React.Fragment>
         <AppBar position="static">
@@ -99,6 +120,13 @@ function App(props) {
                 return (
                   <ListItem divider button key={id}>
                     <ListItemText primary={name} />
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleButtonDelete(id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </ListItem>
                 )
               })}

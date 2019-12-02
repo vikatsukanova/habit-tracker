@@ -28,3 +28,13 @@ exports.createBook = async (bookData) => {
     throw e
   }
 }
+
+exports.deleteHabit = async (id) => {
+  try {
+    const deletedHabit = await Habit.deleteOne({_id: id})
+    return deletedHabit
+  } catch (e) {
+    throw e
+  }
+}
+

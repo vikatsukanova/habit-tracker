@@ -16,15 +16,20 @@ const { URL, PORT } = require('./utils/constants')
 
 // 4. Ensure that the router is parsing the request body to appropriately format incoming requests
 
-// Middleware
 const publicPath = path.resolve(__dirname, '..', 'build');
-app.use('/', express.static(publicPath));
+
+// Middleware
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // 5. Utilise routes
+app.use('/', express.static(publicPath));
 app.use('/api/books', bookRoutes)
+app.use('/*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+})
+
 app.use((err, req, res, next ) => {
   if (err instanceof ValidationError) {
     //handle the validation error

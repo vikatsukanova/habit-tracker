@@ -3,6 +3,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const { ValidationError } = mongoose;
+const path = require('path');
 
 // 1. Create main express intance
 const app = express()
@@ -14,6 +15,11 @@ const { router: bookRoutes } = require('./routes/books/bookRoutes')
 const { URL, PORT } = require('./utils/constants')
 
 // 4. Ensure that the router is parsing the request body to appropriately format incoming requests
+
+// Middleware
+const publicPath = path.resolve(__dirname, '..', 'build');
+app.use('/', express.static(publicPath));
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

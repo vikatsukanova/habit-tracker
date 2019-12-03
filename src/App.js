@@ -51,6 +51,7 @@ function App(props) {
   const handleButtonSubmit = async (event) => {
     const data = {
       name: newHabit,
+      completed: false,
     }
 
     const response = await fetch('/api/books', {
@@ -66,6 +67,11 @@ function App(props) {
     setNewHabit('')
   }
 
+  const handleButtonComplete = async (id) => {
+    console.log({id})
+
+  }
+
   const handleButtonDelete = async (id) => {
     console.log(id);
 
@@ -73,7 +79,7 @@ function App(props) {
       _id: id
     }
 
-    const response = await fetch('/api/books/delete', {
+    const response = await fetch('/api/books/', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -116,10 +122,17 @@ function App(props) {
           <Card>
             <List component="nav" aria-label="secondary mailbox folders">
               {habits.map(habit => {
-                const { _id: id, name } = habit;
+                const { _id: id, name, completed } = habit;
                 return (
                   <ListItem divider button key={id}>
                     <ListItemText primary={name} />
+                    <Button
+                        variant="outlined"
+                        onClick={() => handleButtonComplete(id)}
+                        color={completed ? "primary" : "default"}
+                      >
+                        {completed ? "Completed" : "Mark Complete"}
+                      </Button>
                     <IconButton
                       edge="end"
                       aria-label="delete"

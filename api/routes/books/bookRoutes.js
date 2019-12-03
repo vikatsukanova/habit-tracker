@@ -35,11 +35,9 @@ router.route('/')
     }
   })
 
-  router.route('/delete')
+  router.route('/')
     .delete(async (req, res, next) => {
     const { body } = req
-    console.log({body})
-
     try {
       const success = await bookService.deleteHabit(body)
 
@@ -48,6 +46,21 @@ router.route('/')
       } else {
         res.status(404).end()
       }
+    } catch (e) {
+      next(e)
+    }
+  });
+
+  router.route('/')
+  .patch(async (req, res, next) => {
+    const { body } = req
+    console.log({body})
+    try {
+      const updatedHabit = await bookService.updateHabit(body)
+      
+      res.status(200).send({
+        data: [updatedHabit]
+      })
     } catch (e) {
       next(e)
     }

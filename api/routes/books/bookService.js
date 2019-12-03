@@ -6,7 +6,6 @@ const { model: Habit } = require('./bookModel')
 exports.listBooks = async () => {
   try {
     const books = await Habit.find({})
-    // console.log({books})
     return books
   } catch (e) {
     throw e
@@ -38,3 +37,14 @@ exports.deleteHabit = async (id) => {
   }
 }
 
+exports.updateHabit = async (habitData) => {
+  const { id } = habitData;
+  console.log({id})
+  try {
+    const updatedHabit = await Habit.findByIdAndUpdate(id, {completed: 'true'})
+    console.log({updatedHabit})
+    return updatedHabit
+  } catch (e) {
+    throw e
+  }
+}

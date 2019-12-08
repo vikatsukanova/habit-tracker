@@ -1,96 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
-import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
+import Container from '@material-ui/core/Container';
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    alignItems: 'baseline',
-  },
-  newHabitField: {
-    flex: 4,
-    marginRight: 5
-  },
-  newHabitSubmitButton: {
-    flex: 1
-  }
-});
+import Form from "./Form";
+import Main from "./Main";
 
 function App(props) {
-  const classes = useStyles();
-
-  const [habits, setData] = useState([]);
-  const [newHabit, setNewHabit] = useState('')
-
-  useEffect(() => {
-    const fetchData = async() => {
-      const result = await fetch('/api/books')
-      const habits = await result.json()
-      setData(habits.data);
-    };
-    fetchData();
-  }, []);
-
-  const handleHabitChange = (event) => {
-    const input = event.target.value
-    setNewHabit(input)
-  }
-
-  const handleButtonSubmit = async (event) => {
-    const data = {
-      name: newHabit,
-      completed: false,
-    }
-
-    const response = await fetch('/api/books', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-
-    const newHabitResult = await response.json()
-    setData(habits.concat(newHabitResult.data))
-    setNewHabit('')
-  }
-
-  const handleButtonComplete = async (id) => {
-    console.log({id})
-
-  }
-
-  const handleButtonDelete = async (id) => {
-    console.log(id);
-
-    const data = {
-      _id: id
-    }
-
-    const response = await fetch('/api/books/', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-
-    setData(habits.filter(habit => habit._id !== id));
-
-  }
-
     return (
       <React.Fragment>
         <AppBar position="static">
@@ -99,52 +22,20 @@ function App(props) {
           </Toolbar>
         </AppBar>
         <Container>
-          <div className={classes.root}>
-            <TextField
-              className={classes.newHabitField}
-              fullWidth
-              required
-              id="filled-required"
-              label="New Habit"
-              onChange={handleHabitChange}
-              margin="normal"
-              value={newHabit}
+        <Router>
+          <Switch>
+            <Route
+              exact
+              path="/create"
+              component={Form}
             />
-            <Button
-              className={classes.newHabitSubmitButton}
-              fullWidth
-              variant="outlined"
-              onClick={handleButtonSubmit}
-            >
-              Add a Habit
-            </Button>
-          </div>
-          <Card>
-            <List component="nav" aria-label="secondary mailbox folders">
-              {habits.map(habit => {
-                const { _id: id, name, completed } = habit;
-                return (
-                  <ListItem divider button key={id}>
-                    <ListItemText primary={name} />
-                    <Button
-                        variant="outlined"
-                        onClick={() => handleButtonComplete(id)}
-                        color={completed ? "primary" : "default"}
-                      >
-                        {completed ? "Completed" : "Mark Complete"}
-                      </Button>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleButtonDelete(id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItem>
-                )
-              })}
-            </List>
-          </Card>
+            <Route
+              exact
+              path="/"
+              component={Main}
+            />
+          </Switch>
+        </Router>
         </Container>
       </React.Fragment>
     );

@@ -97,7 +97,7 @@ export default function Form(props) {
     console.log({id})
 
     try {
-      const response = await fetch('api/books', {
+      const response = await fetch('/api/books', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

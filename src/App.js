@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import Form from "./Form";
+import EditForm from "./EditForm";
 import Main from "./Main";
 
 function App(props) {
@@ -33,6 +34,11 @@ function App(props) {
               exact
               path="/"
               component={Main}
+            />
+            <Route
+              exact
+              path="/habit/:id"
+              component={EditForm}
             />
           </Switch>
         </Router>

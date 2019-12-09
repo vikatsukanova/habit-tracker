@@ -9,21 +9,21 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const useStyles = makeStyles({
   root: {
     display: 'flex',
     alignItems: 'baseline',
   },
-  newHabitSubmitButton: {
-    flex: 1
-  }
 });
 
 export default function Main(props) {
   const classes = useStyles();
 
   const [habits, setData] = useState([]);
+  const [complete, setComplete] = useState([]);
 
   useEffect(() => {
     const fetchData = async() => {
@@ -36,6 +36,20 @@ export default function Main(props) {
 
   const handleButtonComplete = async (id) => {
     console.log({id})
+
+    try {
+      const response = await fetch('api/books', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id })
+      })
+
+      // setComplete(complete)
+    } catch (ex) {
+      console.log(ex);
+    }
   }
 
   const handleButtonDelete = async (id) => {
@@ -54,20 +68,22 @@ export default function Main(props) {
     })
 
     setData(habits.filter(habit => habit._id !== id));
+  }
 
+  const handleButtonEdit = (id) => {
+    props.history.push(`/habit/${id}`);
   }
 
   return (
     <div>
       <div className={classes.root}>
-        <Button
-          className={classes.newHabitSubmitButton}
-          fullWidth
-          variant="outlined"
-          onClick={() => { props.history.push('/create'); }}
-        >
-          Add a Habit
-        </Button>
+        <IconButton
+            edge="end"
+            aria-label="edit"
+            onClick={() => { props.history.push('/create')}}
+          >
+        <AddCircleIcon />
+        </IconButton>
       </div>
       {habits.length > 0 ? (
         <Card>
@@ -83,7 +99,14 @@ export default function Main(props) {
                       color={completed ? "primary" : "default"}
                     >
                       {completed ? "Completed" : "Mark Complete"}
-                    </Button>
+                  </Button>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => handleButtonEdit(id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
                   <IconButton
                     edge="end"
                     aria-label="delete"

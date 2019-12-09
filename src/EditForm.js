@@ -67,30 +67,50 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Form(props) {
+  const id = props.match.params.id;
   const classes = useStyles();
 
+  const hasRetrievedHabit = useRef(false);
   const [name, updateHabitName] = useState('');
   const [goal, updateGoal] = useState(1);
   const [period, updatePeriod] = useState('');
 
-  async function createHabit() {
+  useEffect(() => {
+    async function getPageById() {
+      try {
+        const response = await fetch(`/api/books/${id}`);
+        const resp = await response.json();
+        const habit = resp.data;
+        
+        updateHabitName(habit.name);
+        updateGoal(habit.goal);
+        updatePeriod(habit.period);
+
+      } catch (ex) {
+        console.log(ex)
+      }
+    }
+      getPageById();
+  }, [hasRetrievedHabit.current]);
+
+  const updateHabit = async ({ id, name, goal, period }) => {
+    console.log({id})
+
     try {
-      const response = await fetch('/api/books', {
-        method: 'POST',
+      const response = await fetch('api/books', {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name,
+        body: JSON.stringify({ 
+          id,
+          name, 
           goal,
-          period,
+          period
         })
-      });
+      })
 
       props.history.push('/');
-
-      const resp = await response.json();
-      console.log(resp);
     } catch (ex) {
       console.log(ex);
     }
@@ -167,7 +187,7 @@ export default function Form(props) {
               variant="contained"
               color="primary"
               onClick={() => 
-                createHabit()
+                updateHabit({ id, name, goal, period })
               }
             >
             Save

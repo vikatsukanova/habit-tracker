@@ -41,10 +41,31 @@ exports.updateHabit = async (habitData) => {
   const { id } = habitData;
   console.log({id})
   try {
-    const updatedHabit = await Habit.findByIdAndUpdate(id, {completed: 'true'})
+    const updatedHabit = await Habit.findByIdAndUpdate(id, {completed: 'true'}, {new: true})
     console.log({updatedHabit})
     return updatedHabit
   } catch (e) {
     throw e
+  }
+}
+
+exports.editHabit = async (habitData) => {
+  const { id, name, goal, period } = habitData;
+  console.log({id, name, goal, period})
+  try {
+    const updatedHabit = await Habit.findByIdAndUpdate(id, {name: name, goal: goal, period: period}, {new: true})
+    console.log({updatedHabit})
+    return updatedHabit
+  } catch (e) {
+    throw e
+  }
+}
+
+exports.getHabitById = async (id) => {
+  try {
+    const habit = await Habit.findById(id);
+    return habit;
+  } catch (ex) {
+    throw new Error(ex.message);
   }
 }

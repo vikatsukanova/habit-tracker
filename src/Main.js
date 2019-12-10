@@ -23,7 +23,6 @@ export default function Main(props) {
   const classes = useStyles();
 
   const [habits, setData] = useState([]);
-  const [complete, setComplete] = useState([]);
 
   useEffect(() => {
     const fetchData = async() => {
@@ -46,7 +45,6 @@ export default function Main(props) {
         body: JSON.stringify({ id })
       })
 
-      // setComplete(complete)
     } catch (ex) {
       console.log(ex);
     }

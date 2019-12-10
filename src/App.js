@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import Form from "./Form";
 import EditForm from "./EditForm";
 import Main from "./Main";
+import SignIn from "./SignIn";
 
 function App(props) {
     return (
@@ -39,6 +40,11 @@ function App(props) {
               exact
               path="/habit/:id"
               component={EditForm}
+            />
+            <Route
+              exact
+              path="/login"
+              component={SignIn}
             />
           </Switch>
         </Router>

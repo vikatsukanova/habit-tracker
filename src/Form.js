@@ -73,6 +73,8 @@ export default function Form(props) {
   const [goal, updateGoal] = useState(1);
   const [period, updatePeriod] = useState('');
 
+  console.log(props.location.pathname)
+
   async function createHabit() {
     try {
       const response = await fetch('/api/books', {

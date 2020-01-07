@@ -116,6 +116,7 @@ export default function Form(props) {
     }
   }
 
+  // This component is quite large, so we might want to split it up into smaller pieces 
   return (
     <Container className={classes.content} maxWidth="md">
       <form>
@@ -148,6 +149,10 @@ export default function Form(props) {
               onChange={(e) => {updateGoal(e.target.value);}}
               input={<BootstrapInput />}
               >
+              {/* One alternative to this implementation could be:
+                [1,2,3,4,5].map(n => <option value={n}>{n}</option>)
+                making it easier to add/remove numbers in the future
+               */}
                 <option value={1}>1</option>
                 <option value={2}>2</option>
                 <option value={3}>3</option>

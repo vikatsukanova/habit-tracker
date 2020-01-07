@@ -8,6 +8,7 @@ exports.listBooks = async () => {
     const books = await Habit.find({})
     return books
   } catch (e) {
+    // If we're catching an error only to throw it again, we can just remove the try/catch
     throw e
   }
 }
